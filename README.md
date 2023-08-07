@@ -1,4 +1,4 @@
-# LayerZeroStats
+# TRUE Debank Ckecker
 Functional Debank Checker.
 
 **NodeJS must be installed**
