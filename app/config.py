@@ -1,6 +1,8 @@
 from loguru import logger
 from sys import stderr
 
+BLACK_COLOR = False # поменяйте на True, если неправильно отображается таблица
+
 file_js = 'js/main.js'
 file_excel = 'DEBANK.xlsx'
 file_wallets = 'wallets.txt'

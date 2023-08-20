@@ -1,5 +1,7 @@
+from .config import BLACK_COLOR
+
 header_format_dict = {
-    'font_color': '#ffffff',
+    'font_color': '#000000' if BLACK_COLOR else '#ffffff',
     'font_size': 14,
     'bg_color': '#339c5d',
     'bold': True,
