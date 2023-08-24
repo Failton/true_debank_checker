@@ -47,7 +47,7 @@ def send_request(node_process, session, method, url, payload={}, params={}):
             logger.error(f'Unexcepted error while sending request to {url}: {error}')
 
         if (method == 'GET'):
-            edit_session_headers(node_process, session, params, method, url)
+            edit_session_headers(node_process, session, params, method, url.split('api.debank.com')[1].split('?')[0])
         else:
             edit_session_headers(node_process, session, payload, method, url)
 

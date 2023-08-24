@@ -59,7 +59,7 @@ def get_ticker():
     question = [
         inquirer.Text("ticker", message=colored("Введите название (тикер) токена", 'light_yellow'))
     ]
-    ticker = inquirer.prompt(question, theme=loadth(theme))['ticker']
+    ticker = inquirer.prompt(question, theme=loadth(theme))['ticker'].upper()
     return ticker
 
 def get_minimal_amount_in_usd():

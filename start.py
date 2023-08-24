@@ -30,7 +30,7 @@ def chain_balance(node_process, session, address, chain, ticker, min_amount):
     )
 
     for coin in resp.json()['data']:
-        if (ticker == None or coin['optimized_symbol'].lower() == ticker.lower()):
+        if (ticker == None or coin['optimized_symbol'] == ticker):
             coin_in_usd = '?' if (coin["price"] is None) else coin["amount"] * coin["price"]
             if (type(coin_in_usd) is str or (type(coin_in_usd) is float and coin_in_usd > min_amount)):
                 coins.append({
