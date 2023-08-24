@@ -26,6 +26,17 @@ def edit_session_headers(node_process, session, payload, method, path):
     session.headers['x-api-sign'] = sig['signature']
     session.headers['x-api-ts'] = str(sig['ts'])
 
+    abc = 'abcdef0123456789'
+    r_id = ''.join(random.choices(abc, k=32))
+    r_time = str(int(time()))
+    info = {
+        'random_at': r_time,
+        'random_id': r_id,
+        'user_addr': None
+    }
+    account = json.dumps(info)
+    session.headers['account'] = account
+
 
 def send_request(node_process, session, method, url, payload={}, params={}):
     while True:
@@ -60,21 +71,10 @@ def setup_session():
         random_tls_extension_order=True
     )
 
-    r_time = str(int(time()))
-    abc = 'abcdef0123456789'
-    r_id = ''.join(random.choices(abc, k=32))
-    info = {
-        'random_at': r_time,
-        'random_id': r_id,
-        'user_addr': None
-    }
-    account = json.dumps(info)
-
     headers = {
         'authority': 'api.debank.com',
         'accept': '*/*',
         'accept-language': 'ru-RU,ru;q=0.9',
-        'account': account,
         'cache-control': 'no-cache',
         'origin': 'https://debank.com',
         'pragma': 'no-cache',
