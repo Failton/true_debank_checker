@@ -2,6 +2,7 @@ from loguru import logger
 from sys import stderr
 
 BLACK_COLOR = False # поменяйте на True, если неправильно отображается таблица
+NODE_SLEEP_TIME = 0.1 # увеличьте, если ваш комп - картофель
 
 file_js = 'js/main.js'
 file_excel = 'DEBANK.xlsx'

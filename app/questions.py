@@ -18,7 +18,7 @@ def get_action():
         inquirer.List(
             "action",
             message=colored("Выберите действие", 'light_yellow'),
-            choices=["Получить балансы кошельков", "Получить баланс конкретного токена", "Справка", "Выход"],
+            choices=["Получить балансы для всех токенов на кошельках", "Получить баланс только конкретного токена", "Справка", "Выход"],
         )
     ]
     action = inquirer.prompt(question, theme=loadth(theme))['action']
@@ -37,7 +37,7 @@ def select_chains(chains):
     question = [
         inquirer.Checkbox(
             "chains",
-            message=colored("Выберите сети (стрелка вправо - выбрать, влево - убрать выделение)", 'light_yellow'),
+            message=colored("Выберите сети, для которых нужно получить балансы (установите галочку напротив нужных вариантов ответа с помощью клавиш стрелок <- ->)", 'light_yellow'),
             choices=["ВСЕ СЕТИ", *chains],
         )
     ]
@@ -57,7 +57,7 @@ def get_ticker():
     }
 
     question = [
-        inquirer.Text("ticker", message=colored("Введите название токена", 'light_yellow'))
+        inquirer.Text("ticker", message=colored("Введите название (тикер) токена", 'light_yellow'))
     ]
     ticker = inquirer.prompt(question, theme=loadth(theme))['ticker']
     return ticker
@@ -74,7 +74,7 @@ def get_minimal_amount_in_usd():
         }
 
         question = [
-                inquirer.Text("min_amount", message=colored("Введите минимальное количество токенов в $", 'light_yellow'), default="0.01")
+                inquirer.Text("min_amount", message=colored("Введите минимальную сумму в $, начиная с которой токен будет отображен в таблице", 'light_yellow'), default="0.01")
         ]
         try:
             min_amount = float(inquirer.prompt(question, theme=loadth(theme))['min_amount'].strip())

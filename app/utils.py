@@ -13,7 +13,7 @@ def generate_req_rapams(node_process, payload, method, path):
     _json = json.dumps(payload)
 
     node_process.stdin.write(f'{_json}|{method}|{path}')
-    sleep(0.1)
+    sleep(NODE_SLEEP_TIME)
     node_process.stdin.flush()
     output_data = node_process.stdout.readline().strip()
     signature = json.loads(output_data)

@@ -86,7 +86,7 @@ def save_full_to_excel(wallets, chains, coins, balances):
 
 
     worksheet.write(len(wallets) + 3, 0, 'Donate:', donate_cell_format)
-    worksheet.write(len(wallets) + 4, 0, '0x0cb5b78520ac6de655d49582db3ee81840238c0f', donate_cell_format)
+    worksheet.write(len(wallets) + 4, 0, '0x2e69Da32b0F7e75549F920CD2aCB0532Cc2aF0E7', donate_cell_format)
 
 
     worksheet.set_row(0, 35)
@@ -165,7 +165,7 @@ def save_selected_to_excel(wallets, chains, coins, balances, ticker):
 
 
     worksheet.write(len(wallets) + 3, 0, 'Donate:', donate_cell_format)
-    worksheet.write(len(wallets) + 4, 0, '0x0cb5b78520ac6de655d49582db3ee81840238c0f', donate_cell_format)
+    worksheet.write(len(wallets) + 4, 0, '0x2e69Da32b0F7e75549F920CD2aCB0532Cc2aF0E7', donate_cell_format)
 
 
     worksheet.set_row(0, 35)
