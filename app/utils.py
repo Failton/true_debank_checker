@@ -50,7 +50,7 @@ def send_request(node_process, session, method, url, payload={}, params={}):
                 return resp
             elif (resp.status_code == 429):
                 if ('used_chains' not in url):
-                    sleep(random.randint(5, 6))
+                    sleep(random.randint(1, 5))
             else:
                 logger.error(f'Bad request status code: {resp.status_code} | Method: {method} | Response: {resp.text} | Url: {url} | Headers: {session.headers} | Payload: {payload}')
 

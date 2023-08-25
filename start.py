@@ -81,18 +81,18 @@ def get_chains(node_process, session, wallets):
 
 def get_wallet_balance(node_process, session, address):
     payload = {
-        'id': address,
+        'user_addr': address,
     }
-    edit_session_headers(node_process, session, payload, 'GET', '/user')
+    edit_session_headers(node_process, session, payload, 'GET', '/asset/net_curve_24h')
 
     resp = send_request(
         node_process,
         session=session,
         method='GET',
-        url=f'https://api.debank.com/user?id={address}',
+        url=f'https://api.debank.com/asset/net_curve_24h?user_addr={address}',
     )
 
-    usd_value = resp.json()['data']['user']['stats']['usd_value']
+    usd_value = resp.json()['data']['usd_value_list'][-1][1]
 
     return usd_value
 
