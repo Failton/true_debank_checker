@@ -98,7 +98,7 @@ def get_num_of_threads():
         }
 
         question = [
-                inquirer.Text("num_of_threads", message=colored("Введите количество рабочих потоков", 'light_yellow'), default="3")
+                inquirer.Text("num_of_threads", message=colored("Количество рабочих потоков (если у вас > 100 адресов, ставьте только 1 поток)", 'light_yellow'), default="1")
         ]
         try:
             num_of_threads = int(inquirer.prompt(question, theme=loadth(theme))['num_of_threads'].strip())
