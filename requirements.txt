@@ -7,3 +7,4 @@ requests==2.28.2
 termcolor==2.3.0
 tls_client==0.2.1
 XlsxWriter==3.1.1
+plotly==5.23.0

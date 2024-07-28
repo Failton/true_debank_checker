@@ -2,3 +2,9 @@ __pycache__
 DEBANK.xlsx
 log.log
 wallets.txt
+*.wasm
+*.wat
+*.c
+node_modules/
+db/*.db
+blockchain_holdings_report.html

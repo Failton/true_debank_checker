@@ -1,5 +1,8 @@
+#!/usr/bin/env python3
+
 import threading
 import openpyxl
+import argparse
 
 from queue import Queue
 from time import time
@@ -11,6 +14,8 @@ from app.excel import *
 from app.questions import *
 from app.config import *
 from app.utils import *
+from app.db_operations import *
+
 
 
 def chain_balance(node_process, session, address, chain, ticker, min_amount):
@@ -161,7 +166,7 @@ def worker(queue_tasks, queue_results):
             break
 
 
-def get_balances(wallets, ticker=None):
+def get_balances(wallets, ticker=None, auto_import=False):
     session, node_process = setup_session()
 
     logger.info('Getting list of networks used on wallets...')
@@ -170,9 +175,17 @@ def get_balances(wallets, ticker=None):
     pools = get_pools(node_process, session, wallets)
     logger.success(f'Done! Total networks and pools: {len(chains) + len(pools)}\n')
 
-    min_amount = get_minimal_amount_in_usd()
-    num_of_threads = get_num_of_threads()
-    selected_chains = select_chains(chains + [pool for pool in pools])
+    if auto_import:
+        min_amount = 7
+        selected_chains = chains + [pool for pool in pools]
+    else:
+        min_amount = get_minimal_amount_in_usd()
+        selected_chains = select_chains(chains + [pool for pool in pools])
+
+    if auto_import:
+        num_of_threads = 1
+    else:
+        num_of_threads = get_num_of_threads()
 
     coins = {chain: dict() for chain in selected_chains}
     coins.update(pools)
@@ -218,13 +231,19 @@ def get_balances(wallets, ticker=None):
     for th in threads:
         th.join()
 
-    if (ticker is None):
-        save_full_to_excel(wallets, selected_chains, coins, balances)
+    # Save output
+    if auto_import:
+        save_to_database('db/portfolio_history.db', wallets, selected_chains, coins, balances, pools)
+        logger.success(f'Done! Data saved to database')
     else:
-        save_selected_to_excel(wallets, selected_chains, coins, balances, ticker)
+        if ticker is None:
+            save_full_to_excel(wallets, selected_chains, coins, balances)
+        else:
+            save_selected_to_excel(wallets, selected_chains, coins, balances, ticker)
+        print()
+        logger.success(f'Done! Table saved in {file_excel}')
 
-    print()
-    logger.success(f'Done! Table saved in {file_excel}')
+    
     logger.info(f'Time taken: {round((time() - start_time) / 60, 1)} min.\n')
 
 
@@ -238,21 +257,28 @@ def main():
 
     logger.success(f'Successfully loaded {len(wallets)} addresses\n')
 
-    while True:
-        action = get_action()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--auto-import', action='store_true', help='Run automatic import on all chains')
+    args = parser.parse_args()
 
-        match action:
-            case 'Get balances for all tokens in wallets':
-                get_balances(wallets)
-            case 'Get balance for a specific token only':
-                ticker = get_ticker()
-                get_balances(wallets, ticker)
-            case 'Help':
-                show_help()
-            case 'Exit':
-                exit()
-            case _:
-                pass
+    if args.auto_import:
+        get_balances(wallets, auto_import=True)
+    else:
+        while True:
+            action = get_action()
+
+            match action:
+                case 'Get balances for all tokens in wallets':
+                    get_balances(wallets)
+                case 'Get balance for a specific token only':
+                    ticker = get_ticker()
+                    get_balances(wallets, ticker)
+                case 'Help':
+                    show_help()
+                case 'Exit':
+                    exit()
+                case _:
+                    pass
 
 
 if (__name__ == '__main__'):
